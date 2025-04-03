@@ -1,0 +1,58 @@
+services:
+  postgresql:
+    container_name: pq_sql
+    image: postgres
+    environment:
+      POSTGRES_USER: saurav
+      POSTGRES_PASSWORD: saurav
+      PGDATA: /data/postgres
+    volumes:
+      - postgres:/data/postgres
+    networks:
+      - trip-net
+    ports:
+      - "5432:5432"
+    restart: unless-stopped
+
+  pgadmin:
+    container_name: pg_admin
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-pgadmin4@pgadmin.org}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin}
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
+    volumes:
+      - pgadmin:/var/lib/pgadmin
+    ports:
+      - "5051:80"
+    networks:
+      - trip-net
+    restart: unless-stopped
+
+  mail-dev:
+    container_name: mail_dev
+    image: maildev/maildev
+    ports:
+      - "1080:1080"
+      - "1025:1025"
+
+  keycloak:
+    container_name: key_cloak
+    image: quay.io/keycloak/keycloak:26.1.4
+    ports:
+      - "9080:8080"
+    environment:
+      - KC_BOOTSTRAP_ADMIN_USERNAME=admin
+      - KC_BOOTSTRAP_ADMIN_PASSWORD=admin
+    networks:
+      - trip-net
+    command:
+      - "start-dev"
+
+networks:
+  trip-net:
+    driver: bridge
+
+volumes:
+  postgres:
+  pgadmin:

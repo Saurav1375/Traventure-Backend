@@ -1,23 +1,10 @@
 spring:
-  application:
-    name: TripPlanner
+  profiles:
+    active: dev
 
-  datasource:
-    url: jdbc:postgresql://localhost:5432/postgres
-    username: saurav
-    password: saurav
-    driver-class-name: org.postgresql.Driver
-  jpa:
-    hibernate:
-      ddl-auto: update
-    database: postgresql
-    database-platform: org.hibernate.dialect.PostgreSQLDialect
+springdoc:
+  default-produces-media-type: application/json
 
-  security:
-    oauth2:
-      resourceserver:
-        jwt:
-          issuer-uri: http://localhost:9080/realms/trip
-          jwk-set-uri: ${spring.security.oauth2.resourceserver.jwt.issuer-uri}/protocol/openid-connect/certs
 server:
-  port: 8030
+  servlet:
+    context-path: /api/v1/

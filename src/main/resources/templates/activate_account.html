@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Account Activation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 25px;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .header {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .message {
+            font-size: 16px;
+            color: #555;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        .activation-code {
+            font-size: 28px;
+            font-weight: bold;
+            color: #007bff;
+            background: #e9f5ff;
+            padding: 10px;
+            border-radius: 5px;
+            display: inline-block;
+            margin: 15px 0;
+            text-align: center; /* Ensures text inside is centered */
+        }
+
+        .parent-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 12px 24px;
+            background-color: #007bff;
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 5px;
+            transition: 0.3s;
+        }
+
+        .cta-button:hover {
+            background-color: #0056b3;
+        }
+
+        .expiration-notice {
+            font-size: 14px;
+            color: #ff3300;
+            margin-top: 10px;
+            font-weight: 500;
+        }
+
+        .footer {
+            font-size: 14px;
+            color: #888;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="logo-container">
+        <img src='https://firebasestorage.googleapis.com/v0/b/getwel-8ce59.appspot.com/o/logo.png?alt=media&token=1224deb8-f5c1-47c0-b4df-2f70b92e0658'
+             alt='Traventure' width='150' style='display: block; margin: auto;'>
+    </div>
+    <div class="header">Activate Your Account</div>
+    <p class="message">
+        Hello <strong th:text="${username}"></strong>,<br>
+        Thank you for signing up! Please use the following activation code to activate your account:
+    </p><br>
+    <div class="parent-container">
+        <span class="activation-code" th:text="${activation_code}"></span>
+    </div>
+    <p class="expiration-notice">This activation code will expire in 15 minutes.</p>
+    <p class="message">
+        If you didn't request this, you can safely ignore this email.
+    </p>
+</div>
+</body>
+</html>

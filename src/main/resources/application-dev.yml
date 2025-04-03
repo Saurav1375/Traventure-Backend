@@ -1,0 +1,44 @@
+spring:
+  application:
+    name: TripPlanner
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: saurav
+    password: saurav
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+
+  mail:
+    host: localhost
+    port: 1025
+    username: saurav
+    password: saurav
+    properties:
+      mail:
+        smtp:
+          trust: "*"
+        auth: true
+        starttls:
+          enabled: true
+        connectiontimeout: 5000
+        timeout: 3000
+        writetimeout: 5000
+
+
+application:
+  security:
+    jwt:
+      secret-key: ${SECRET_KEY}
+      expiration: 86400000 #1 day
+      refresh-token:
+        expiration: 604800000 #7 day
+
+
+
+server:
+  port: 8030

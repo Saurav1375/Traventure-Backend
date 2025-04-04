@@ -87,12 +87,4 @@ public class AuthenticationController {
 
     }
 
-
-    @GetMapping("/reset-password")
-    public String showResetPasswordPage(@RequestParam String email, Model model) {
-        model.addAttribute("email", email);
-        return "reset-password"; // Loads reset-password.html
-    }
-
-
 }

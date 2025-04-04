@@ -66,10 +66,10 @@ public class AuthenticationController {
 
     @GetMapping("/forget-password")
     public ResponseEntity<?> forgetPassword(
-            @RequestParam("email") String userEmail
+            @RequestParam("email") String email
     ) {
         try {
-            authenticationService.forgetPassword(userEmail);
+            authenticationService.forgetPassword(email);
             return ResponseEntity.ok().build();
         } catch (MessagingException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
@@ -79,12 +79,11 @@ public class AuthenticationController {
 
     @GetMapping("/update-password")
     public ResponseEntity<String> updatePassword(
-            @RequestParam("email") String userEmail,
+            @RequestParam("token") String token,
             @RequestParam("password") String password,
             @RequestParam("confirmPassword") String confirmPassword) {
 
-        return ResponseEntity.ok(authenticationService.updatePassword(userEmail, password, confirmPassword));
-
+        return ResponseEntity.ok(authenticationService.updatePassword(token, password, confirmPassword));
     }
 
 }

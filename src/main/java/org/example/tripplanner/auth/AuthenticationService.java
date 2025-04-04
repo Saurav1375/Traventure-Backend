@@ -6,6 +6,7 @@ import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.val;
 import org.example.tripplanner.email.EmailService;
 import org.example.tripplanner.email.EmailTemplateName;
 import org.example.tripplanner.role.RoleRepository;
@@ -141,11 +142,13 @@ public class AuthenticationService {
         tokenRepository.save(savedToken);
     }
 
-    public void forgetPassword(String userEmail) throws MessagingException {
-        var user = userRepository.findByEmail(userEmail).orElseThrow(
-                () -> new RuntimeException("USER NOT FOUND")
+    public void forgetPassword(String email) throws MessagingException {
+        val user = userRepository.findByEmail(email).orElseThrow(
+                () -> new RuntimeException("User does not exist")
         );
-        emailService.sendResetPasswordEmail(userEmail);
+        var newValidToken = generateAndSaveActivationToken(user);
+
+        emailService.sendResetPasswordEmail(email, newValidToken);
 
     }
 
@@ -176,16 +179,22 @@ public class AuthenticationService {
         }
     }
 
-    public String updatePassword(String userEmail, String password, String confirmPassword) {
+    public String updatePassword(String token, String password, String confirmPassword) {
+        val savedTokenInDb = tokenRepository.findByToken(token).orElseThrow(
+                () -> new RuntimeException("Token does not exist")
+        );
+        if (LocalDateTime.now().isAfter(savedTokenInDb.getExpiresAt())) {
+            return "Session has expired.";
+        }
+        var user = userRepository.findById(savedTokenInDb.getUser().getId()).orElseThrow(
+                () -> new UsernameNotFoundException("User not found")
+        );
         if (!password.equals(confirmPassword)) {
             return "Passwords do not match";
         }
-        var user = userRepository.findByEmail(userEmail).orElseThrow(
-                () -> new UsernameNotFoundException("User not found")
-        );
+
         user.setPassword(passwordEncoder.encode(password));
         userRepository.save(user);
-
         return "Password successfully updated" ;
     }
 }

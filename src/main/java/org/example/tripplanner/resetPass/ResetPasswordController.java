@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class ResetPasswordController {
 
     @GetMapping("/reset")
-    public String showResetPasswordPage(@RequestParam String email, Model model) {
-        model.addAttribute("email", email);  // Pass email to Thymeleaf template
+    public String showResetPasswordPage(@RequestParam String token, Model model) {
+        model.addAttribute("token", token);  // Pass email to Thymeleaf template
         return "reset-password";  // This should match reset-password.html in /templates/
     }
 }

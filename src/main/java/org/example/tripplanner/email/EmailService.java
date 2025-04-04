@@ -64,8 +64,8 @@ public class EmailService {
     }
 
     @Async
-    public void sendResetPasswordEmail(String to) throws MessagingException {
-        String resetLink = "http://localhost:8030/api/v1/reset?email=" + to;
+    public void sendResetPasswordEmail(String to, String token) throws MessagingException {
+        String resetLink = "http://localhost:8030/api/v1/reset?token=" + token;
 
         String message = "<html>"
                 + "<body style='font-family: Arial, sans-serif; background-color: #f4f4f4; padding: 20px;'>"

@@ -28,6 +28,9 @@ public class EmailService {
     @Value("${application.email.from}")
     private String from;
 
+    @Value("${application.redirectUrl}")
+    private String redirectUrl;
+
     @Async
     public void sendConfirmationEmail(
             String to,
@@ -65,10 +68,9 @@ public class EmailService {
 
         mailSender.send(mimeMessage);
     }
-
     @Async
     public void sendResetPasswordEmail(String to, String token) throws MessagingException {
-        String resetLink = "http://localhost:8030/api/v1/reset?token=" + token;
+        String resetLink = "http://" + redirectUrl + "/api/v1/reset?token=" + token;
 
         String message = "<html>"
                 + "<body style='font-family: Arial, sans-serif; background-color: #f4f4f4; padding: 20px;'>"

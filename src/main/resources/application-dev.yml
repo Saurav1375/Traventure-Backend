@@ -39,6 +39,7 @@ application:
         expiration: 604800000 #7 day
   email:
     from: noreplytraventure@gmail.com
+  redirectUrl: localhost:8030
 
 
 

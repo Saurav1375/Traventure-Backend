@@ -3,8 +3,8 @@ services:
     container_name: pq_sql
     image: postgres
     environment:
-      POSTGRES_USER: saurav
-      POSTGRES_PASSWORD: saurav
+      POSTGRES_USER: ${POSTGRES_USERNAME}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       PGDATA: /data/postgres
     volumes:
       - postgres:/data/postgres

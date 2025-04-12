@@ -14,10 +14,10 @@ spring:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
 
   mail:
-    host: localhost
-    port: 1025
-    username: saurav
-    password: saurav
+    host: smtp.sendgrid.net
+    port: 587
+    username: apikey
+    password: ${SENDGRID_APIKEY}
     properties:
       mail:
         smtp:
@@ -25,9 +25,6 @@ spring:
         auth: true
         starttls:
           enabled: true
-        connectiontimeout: 5000
-        timeout: 3000
-        writetimeout: 5000
 
 
 application:

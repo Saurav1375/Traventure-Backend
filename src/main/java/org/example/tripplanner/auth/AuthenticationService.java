@@ -216,7 +216,7 @@ public class AuthenticationService {
      * @throws MessagingException If there is an error sending the confirmation email
      * @throws BusinessException  If the token is invalid, expired, or user not found
      */
-    public void activateToken(String token) throws MessagingException {
+    public void activateToken(String token, String email) throws MessagingException {
         Token savedToken = tokenRepository.findByToken(token).orElseThrow(
                 () -> new BusinessException(BusinessErrorCodes.INVALID_TOKEN, "Token does not exist")
         );
@@ -227,6 +227,12 @@ public class AuthenticationService {
         var user = userRepository.findById(savedToken.getUser().getId()).orElseThrow(
                 () -> new BusinessException(BusinessErrorCodes.USER_NOT_FOUND)
         );
+        if (!user.getEmail().equals(email)) {
+            throw new BusinessException(BusinessErrorCodes.INVALID_TOKEN, "Token does not exist");
+        }
+        if (user.isEnabled()) {
+            throw new BusinessException(BusinessErrorCodes.ACCOUNT_ALREADY_ACTIVATED);
+        }
         user.setEnabled(true);
         userRepository.save(user);
         savedToken.setValidatedAt(LocalDateTime.now());

@@ -47,9 +47,10 @@ public class AuthenticationController {
 
     @GetMapping("/activate-account")
     public void confirm(
-            @RequestParam String token
+            @RequestParam String token,
+            @RequestParam String email
     ) throws MessagingException {
-        authenticationService.activateToken(token);
+        authenticationService.activateToken(token, email);
     }
 
     @GetMapping("/resend-code")

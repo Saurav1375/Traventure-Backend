@@ -43,7 +43,8 @@ public enum BusinessErrorCodes {
     MISSING_TOKEN(502, HttpStatus.BAD_REQUEST, "Authentication token is required"),
 
     // Validation errors (200-299)
-    WEAK_PASSWORD(200, HttpStatus.BAD_REQUEST, "The password does not meet security requirements"),
+    WEAK_PASSWORD(200, HttpStatus.BAD_REQUEST,
+            "Password must be at least 8 characters long, contain at least one uppercase letter, one lowercase letter, one digit, and one special character (e.g., @$!%*?&)"),
     INVALID_EMAIL_FORMAT(201, HttpStatus.BAD_REQUEST, "The email format is invalid"),
 
     // Rate limiting and security (600-699)

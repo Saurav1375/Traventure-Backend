@@ -193,11 +193,6 @@ public class AuthenticationService {
             var jwtToken = jwtService.generateToken(claims, user);
             var refreshToken = jwtService.generateRefreshToken(claims, user);
 
-            // Check if user's email is verified
-            if (!user.isEnabled()) {
-                throw new BusinessException(BusinessErrorCodes.ACCOUNT_NOT_VERIFIED);
-            }
-
             return AuthenticationResponse.builder()
                     .accessToken(jwtToken)
                     .refreshToken(refreshToken)
@@ -205,6 +200,8 @@ public class AuthenticationService {
 
         } catch (BadCredentialsException e) {
             throw new BusinessException(BusinessErrorCodes.BAD_CREDENTIALS);
+        } catch (DisabledException e) {
+            throw new BusinessException(BusinessErrorCodes.ACCOUNT_NOT_VERIFIED);
         } catch (LockedException e) {
             throw new BusinessException(BusinessErrorCodes.ACCOUNT_LOCKED);
         } catch (Exception e) {

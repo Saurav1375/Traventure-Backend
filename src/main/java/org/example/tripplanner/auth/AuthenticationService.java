@@ -60,7 +60,7 @@ public class AuthenticationService {
      *
      * @param request The registration details including firstname, lastname, email, and password
      * @throws MessagingException If there is an error sending the activation email
-     * @throws BusinessException If the email is already registered
+     * @throws BusinessException  If the email is already registered
      */
     public void register(RegistrationRequest request) throws MessagingException {
         // Check if email already exists
@@ -139,7 +139,7 @@ public class AuthenticationService {
      * @param userEmail The email of the user to resend the activation code to
      * @return A message indicating the result of the operation
      * @throws MessagingException If there is an error sending the email
-     * @throws BusinessException If the user is not found or account is already activated
+     * @throws BusinessException  If the user is not found or account is already activated
      */
     public String resendActivationCode(String userEmail) throws MessagingException {
         var user = userRepository.findByEmail(userEmail).orElseThrow(
@@ -187,7 +187,6 @@ public class AuthenticationService {
             );
 
 
-
             var claims = new HashMap<String, Object>();
             var user = (User) auth.getPrincipal();
             claims.put("fullName", user.getFullName());
@@ -195,20 +194,18 @@ public class AuthenticationService {
             var refreshToken = jwtService.generateRefreshToken(claims, user);
 
             // Check if user's email is verified
-            if (!user.isEnabled()) {
-                throw new BusinessException(BusinessErrorCodes.ACCOUNT_NOT_VERIFIED);
-            }
 
             return AuthenticationResponse.builder()
                     .accessToken(jwtToken)
                     .refreshToken(refreshToken)
                     .build();
-        } catch (DisabledException e) {
-            throw new BusinessException(BusinessErrorCodes.ACCOUNT_DISABLED);
-        } catch (LockedException e) {
-            throw new BusinessException(BusinessErrorCodes.ACCOUNT_LOCKED);
+
         } catch (BadCredentialsException e) {
             throw new BusinessException(BusinessErrorCodes.BAD_CREDENTIALS);
+        } catch (DisabledException e) {
+            throw new BusinessException(BusinessErrorCodes.ACCOUNT_NOT_VERIFIED);
+        } catch (LockedException e) {
+            throw new BusinessException(BusinessErrorCodes.ACCOUNT_LOCKED);
         } catch (Exception e) {
             throw new BusinessException(BusinessErrorCodes.AUTHENTICATION_FAILED, "Authentication failed: " + e.getMessage());
         }
@@ -219,7 +216,7 @@ public class AuthenticationService {
      *
      * @param token The activation token
      * @throws MessagingException If there is an error sending the confirmation email
-     * @throws BusinessException If the token is invalid, expired, or user not found
+     * @throws BusinessException  If the token is invalid, expired, or user not found
      */
     public void activateToken(String token) throws MessagingException {
         Token savedToken = tokenRepository.findByToken(token).orElseThrow(
@@ -249,7 +246,7 @@ public class AuthenticationService {
      *
      * @param email The email of the user who wants to reset their password
      * @throws MessagingException If there is an error sending the reset email
-     * @throws BusinessException If the user does not exist
+     * @throws BusinessException  If the user does not exist
      */
     public void forgetPassword(String email) throws MessagingException {
         val user = userRepository.findByEmail(email).orElseThrow(
@@ -267,9 +264,9 @@ public class AuthenticationService {
     /**
      * Refreshes the JWT access token using a valid refresh token.
      *
-     * @param request HTTP request containing the refresh token in the Authorization header
+     * @param request  HTTP request containing the refresh token in the Authorization header
      * @param response HTTP response to write the new tokens to
-     * @throws IOException If there is an error writing to the response
+     * @throws IOException       If there is an error writing to the response
      * @throws BusinessException If the token is invalid or missing
      */
     public void refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -312,8 +309,8 @@ public class AuthenticationService {
     /**
      * Updates a user's password after validation of the reset token.
      *
-     * @param token The reset token
-     * @param password The new password
+     * @param token           The reset token
+     * @param password        The new password
      * @param confirmPassword Password confirmation to ensure they match
      * @return A message indicating the result of the operation
      * @throws BusinessException If token is invalid, expired, or passwords don't match
